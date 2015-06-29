@@ -1,16 +1,15 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 
 #-------------------------------------
-# ピースクラス
+# 繝斐�ｼ繧ｹ繧ｯ繝ｩ繧ｹ
 #-------------------------------------
 class Piece
-  
+
   def initialize
   end
-  
+
   def draw
   end
-  
-end
 
+end

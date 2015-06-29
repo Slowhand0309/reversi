@@ -1,36 +1,36 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./background"
 require "./scene"
 
-# ƒEƒBƒ“ƒhƒEƒ^ƒCƒgƒ‹Ý’è
+# ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¿ã‚¤ãƒˆãƒ«è¨­å®š
 Window.caption = "reversi"
 
-# ƒtƒHƒ“ƒgì¬
+# ãƒ•ã‚©ãƒ³ãƒˆä½œæˆ
 baseFont = Font.new(32)
 
-# ”wŒiƒNƒ‰ƒX¶¬
+# èƒŒæ™¯ã‚¯ãƒ©ã‚¹ç”Ÿæˆ
 backGround = BackGround.new
 
-# ƒV[ƒ“ŠÇ—ƒNƒ‰ƒX¶¬
+# ã‚·ãƒ¼ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹ç”Ÿæˆ
 scene = Scene.new
-# ƒV[ƒ“‚Ì‰Šú‰»
+# ã‚·ãƒ¼ãƒ³ã®åˆæœŸåŒ–
 scene.init_scene
 
 #-----------------------------------------------
-# ƒƒCƒ“ƒ‹[ƒv ESCƒL[‰Ÿ‰º‚Åƒ‹[ƒv‚ð”²‚¯‚é
+# ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ— ESCã‚­ãƒ¼æŠ¼ä¸‹ã§ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 #-----------------------------------------------
 Window.loop do
 
-  # ƒV[ƒ“‚ÌXV
+  # ã‚·ãƒ¼ãƒ³ã®æ›´æ–°
   scene.update
 
-  # ”wŒi•`‰æ
+  # èƒŒæ™¯æç”»
   backGround.draw
 
-  # ƒV[ƒ“•`‰æ
+  # ã‚·ãƒ¼ãƒ³æç”»
   scene.draw
 
   break if Input.keyPush? K_ESCAPE
-  # FPS•\Ž¦
+  # FPSè¡¨ç¤º
   Window.drawFont(0, 0, Window.fps.to_s, baseFont, :color => C_RED)
 end

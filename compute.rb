@@ -1,16 +1,16 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 require "./state"
 
 #-------------------------------------
-# ƒRƒ“ƒsƒ…[ƒ^ƒNƒ‰ƒX
+# ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹
 #-------------------------------------
 class Compute
-  
+
   include Reversi
-  
-  WAIT_COUNT = 80 # ‘Ò‹@ƒJƒEƒ“ƒg
-  
+
+  WAIT_COUNT = 80 # å¾…æ©Ÿã‚«ã‚¦ãƒ³ãƒˆ
+
   def initialize(state, imgPiece, piecesState, callBack)
     @state = state
     @pieceImg = imgPiece
@@ -18,37 +18,36 @@ class Compute
     @callback = callBack
     @wait_count = 0
   end
-  
+
   def update
-  
+
     if WAIT_COUNT > @wait_count
-      # ‘Ò‹@’†EEE
+      # å¾…æ©Ÿä¸­ãƒ»ãƒ»ãƒ»
       @wait_count += 1
       return
     end
-    
-    # ‘Ò‹@ƒJƒEƒ“ƒ^ƒŠƒZƒbƒg
+
+    # å¾…æ©Ÿã‚«ã‚¦ãƒ³ã‚¿ãƒªã‚»ãƒƒãƒˆ
     @wait_count = 0
-    
-    # ˆê”Ô‚Ğ‚Á‚­‚è•Ô‚·”‚ª‘½‚¢‰ÓŠ‚ğZo
+
+    # ä¸€ç•ªã²ã£ãã‚Šè¿”ã™æ•°ãŒå¤šã„ç®‡æ‰€ã‚’ç®—å‡º
     x, y = compute_position
-    
-    # ‚µ‚Î‚µ‘Ò‚Â
+
+    # ã—ã°ã—å¾…ã¤
     #sleep(WAIT_SEC)
     #p "com update x:#{x}, y:#{y}"
-    # ÀÛ‚ÌXV
+    # å®Ÿéš›ã®æ›´æ–°
     @callback.call(x, y)
   end
-  
+
   def draw
   end
-  
+
   protected
-  
+
   def compute_position
     x, y = 0, 0
     return x, y
   end
-  
-end
 
+end

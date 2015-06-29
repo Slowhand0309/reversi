@@ -1,8 +1,8 @@
-#!ruby -Ks
+#!ruby -Ku
 require 'dxruby'
 
 #-------------------------------------
-# ‹¤’Ê’è‹`
+# å…±é€šå®šç¾©
 #-------------------------------------
 module Reversi
 
@@ -20,4 +20,3 @@ module Reversi
   USE_ANIMATION = true
 
 end
-

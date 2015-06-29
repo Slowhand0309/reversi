@@ -1,30 +1,30 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 
 #-------------------------------------
-# ”wŒiŠÇ—ƒNƒ‰ƒX
+# èƒŒæ™¯ç®¡ç†ã‚¯ãƒ©ã‚¹
 #-------------------------------------
 class BackGround
   
   include Reversi
   
-  BASE_COLOR = [255, 10, 255, 10]  # “y‘ä”wŒiF
-  LINE_COLOR = C_BLACK             # ƒ‰ƒCƒ“F
+  BASE_COLOR = [255, 10, 255, 10]  # åœŸå°èƒŒæ™¯è‰²
+  LINE_COLOR = C_BLACK             # ãƒ©ã‚¤ãƒ³è‰²
   
   def initialize
-    # ƒCƒ[ƒWì¬
+    # ã‚¤ãƒ¡ãƒ¼ã‚¸ä½œæˆ
     @baseImage = Image.new(Window.width, Window.height, BASE_COLOR)
   end
   
   def draw
-    # “y‘ä•`‰æ
+    # åœŸå°æç”»
     Window.draw(0, 0, @baseImage)
 
-    # YŽ²•ûŒüƒ‰ƒCƒ“•`‰æ
+    # Yè»¸æ–¹å‘ãƒ©ã‚¤ãƒ³æç”»
     DIVIDE_FILED_Y.times { |i|
       Window.drawLine(i * DIVIDE_SIZEX, 0, i * DIVIDE_SIZEX, Window.height, LINE_COLOR)
     }
-    # XŽ²•ûŒüƒ‰ƒCƒ“•`‰æ
+    # Xè»¸æ–¹å‘ãƒ©ã‚¤ãƒ³æç”»
     DIVIDE_FILED_X.times { |j|
       Window.drawLine(0, j * DIVIDE_SIZEY, Window.width, j * DIVIDE_SIZEY, LINE_COLOR)
     }

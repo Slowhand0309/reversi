@@ -1,45 +1,45 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 require "./reversi_status"
 
 #-------------------------------------
-# ”Õã‚Å‚Ìó‘ÔŠÇ—ƒNƒ‰ƒX
+# ç›¤ä¸Šã§ã®çŠ¶æ…‹ç®¡ç†ã‚¯ãƒ©ã‚¹
 #-------------------------------------
 module State
-  
+
   include Reversi
-  
-  # ƒ`ƒFƒbƒN‘ÎÛ•ûŒü [ã, ‰º, ‰E, ¶, ‰Eã, ¶ã, ¶‰º, ‰E‰º]
+
+  # ãƒã‚§ãƒƒã‚¯å¯¾è±¡æ–¹å‘ [ä¸Š, ä¸‹, å³, å·¦, å³ä¸Š, å·¦ä¸Š, å·¦ä¸‹, å³ä¸‹]
   CHECK_TARGETS = [[0, -1], [0, 1], [1, 0], [-1, 0], [1, -1], [-1, -1], [-1, 1], [1, 1]]
-  
-  #=== ƒQ[ƒ€I—¹”»’è
-  #‘S‚Ä‚Ìƒ}ƒX‚ª–„‚Ü‚Á‚Ä‚¢‚½‚çI—¹
+
+  #=== ã‚²ãƒ¼ãƒ çµ‚äº†åˆ¤å®š
+  #å…¨ã¦ã®ãƒã‚¹ãŒåŸ‹ã¾ã£ã¦ã„ãŸã‚‰çµ‚äº†
   def game_over?(states)
     states.each { |piece|
       return false if piece == PIECE_NONE
     }
     return true
   end
-  
-  #=== Ÿ—˜Ò”»’è
+
+  #=== å‹åˆ©è€…åˆ¤å®š
   def who_winner?(states)
-    # ”’‚Ì–‡”‚ğ”‚¦‚é
+    # ç™½ã®æšæ•°ã‚’æ•°ãˆã‚‹
     count = 0
     states.each { |piece|
       if piece == PIECE_WHITE
         count += 1
       end
     }
-    return PIECE_NONE if (states.size / 2 == count) # ˆø‚«•ª‚¯
-    return PIECE_WHITE if (states.size / 2 < count) # ”’‚ÌŸ‚¿
+    return PIECE_NONE if (states.size / 2 == count) # å¼•ãåˆ†ã‘
+    return PIECE_WHITE if (states.size / 2 < count) # ç™½ã®å‹ã¡
     return PIECE_BLACK
   end
-  
-  #=== ó‘ÔXV
-  #ƒ`ƒFƒbƒN‘ÎÛ‚Ì•ûŒü‚Éƒ`ƒFƒbƒN‚ğs‚¢A”½“]‚Å‚«‚éƒs[ƒX‚ğ”½“]‚³‚¹‚é
+
+  #=== çŠ¶æ…‹æ›´æ–°
+  #ãƒã‚§ãƒƒã‚¯å¯¾è±¡ã®æ–¹å‘ã«ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã„ã€åè»¢ã§ãã‚‹ãƒ”ãƒ¼ã‚¹ã‚’åè»¢ã•ã›ã‚‹
   def updateState(pieces, x, y, state, check)
     statuses = Array.new
-    # ‘S•ûŒü‚É‘Î‚µ‚Äƒ`ƒFƒbƒN
+    # å…¨æ–¹å‘ã«å¯¾ã—ã¦ãƒã‚§ãƒƒã‚¯
     CHECK_TARGETS.each { |dx, dy|
       #p "-------------------------------------"
       #p "x:#{x}, y:#{y}, dx:#{dx}, dy:#{dy}, state:#{state}"
@@ -56,7 +56,7 @@ module State
         statuses << reversi_state
         #p "add state : #{statuses}"
         if USE_ANIMATION == false
-          # ”½“]
+          # åè»¢
           1.upto(count) { |idx|
             pieces[(y + (dy * idx)) * DIVIDE_FILED_X + x + (dx * idx)] = state
           }
@@ -65,9 +65,9 @@ module State
     }
     return statuses
   end
-  
-  #=== ”½“]‰Â”Û
-  #x, y‚ÌˆÊ’u‚©‚çdx, dy•ûŒü‚Ö”½“]‚Å‚«‚é‚©ŒŸõ
+
+  #=== åè»¢å¯å¦
+  #x, yã®ä½ç½®ã‹ã‚‰dx, dyæ–¹å‘ã¸åè»¢ã§ãã‚‹ã‹æ¤œç´¢
   def reverse?(x, y, dx, dy, state, pieces)
     count = 0
     reverse = false
@@ -75,15 +75,15 @@ module State
     while ((_x >= 0 && _x <= DIVIDE_FILED_X)) &&
           ((_y >= 0 && _y <= DIVIDE_FILED_Y)) do
 
-       # i‚ñ‚¾æ‚Ìó‘Ô‚ğæ“¾
+       # é€²ã‚“ã å…ˆã®çŠ¶æ…‹ã‚’å–å¾—
        index = (_y + dy) * DIVIDE_FILED_X + _x + dx
        if index < 0 || index > pieces.size
          break
        end
-       
+
        temp = pieces[index]
        #p "temp : #{temp}, count:#{count}"
-       # i‚ñ‚¾æ‚ª‰½‚à–³‚¯‚ê‚ÎI—¹
+       # é€²ã‚“ã å…ˆãŒä½•ã‚‚ç„¡ã‘ã‚Œã°çµ‚äº†
        break if temp == PIECE_NONE
        if count == 0
          break if temp == state
@@ -96,8 +96,8 @@ module State
        count = count + 1
        _x, _y = _x + dx, _y + dy
     end
-    
-    # ”½“]‚·‚é‚©‚Æ”½“]‚·‚éƒs[ƒX”‚ğ•Ô‚·
+
+    # åè»¢ã™ã‚‹ã‹ã¨åè»¢ã™ã‚‹ãƒ”ãƒ¼ã‚¹æ•°ã‚’è¿”ã™
     return reverse, count
   end
 
@@ -106,4 +106,3 @@ module State
   module_function :reverse?
   module_function :who_winner?
 end
-

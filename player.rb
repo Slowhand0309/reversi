@@ -1,35 +1,34 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 
 #-------------------------------------
-# ƒvƒŒƒCƒ„[ƒNƒ‰ƒX
+# ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¯ãƒ©ã‚¹
 #-------------------------------------
 class Player
-  
+
   include Reversi
-  
+
   def initialize(imgPiece, callBack)
     @mx = 0
     @my = 0
     @pieceImg = imgPiece
     @callback = callBack
   end
-  
+
   def update
     @mx = Input.mousePosX
     @my = Input.mousePosY
-    
-    # ¶ƒNƒŠƒbƒN‚³‚ê‚½ê‡
+
+    # å·¦ã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸå ´åˆ
     if Input.mousePush?(M_LBUTTON)
-      # ƒR[ƒ‹ƒoƒbƒNƒƒ\ƒbƒhŒÄ‚Ño‚µ
+      # ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãƒ¡ã‚½ãƒƒãƒ‰å‘¼ã³å‡ºã—
       @callback.call(@mx / DIVIDE_SIZEX, @my / DIVIDE_SIZEY)
     end
   end
-  
+
   def draw
-    # ©ƒs[ƒX•`‰æ
+    # è‡ªãƒ”ãƒ¼ã‚¹æç”»
     Window.draw(@mx - @pieceImg.width / 2, @my - @pieceImg.height / 2, @pieceImg)
   end
-  
-end
 
+end

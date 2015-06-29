@@ -1,24 +1,24 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 require 'observer'
 
 #-------------------------------------
-# ƒV[ƒ“ŠÇ—ƒNƒ‰ƒX
+# ã‚·ãƒ¼ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹
 #-------------------------------------
 class Animation
 
   include Reversi
   include Observable
   
-  # ”Á“_ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒXƒs[ƒh ¦”’l‚ª­‚È‚¢’ö’x‚­‚È‚é
+  # æ–‘ç‚¹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¹ãƒ”ãƒ¼ãƒ‰ â€»æ•°å€¤ãŒå°‘ãªã„ç¨‹é…ããªã‚‹
   ANIMATION_SPEED = 0.3
   
-  #=== ‰Šú‰»ˆ—
+  #=== åˆæœŸåŒ–å‡¦ç†
   def initialize(pieces_img)
     @pieces_img = pieces_img
   end
 
-  #=== ƒƒ“ƒo‰Šú‰»
+  #=== ãƒ¡ãƒ³ãƒåˆæœŸåŒ–
   def clear
     @statuses = nil
     @status_count = 0
@@ -32,9 +32,9 @@ class Animation
     @dy = 0
   end
 
-  #=== ƒAƒjƒ[ƒVƒ‡ƒ“ƒpƒ‰ƒ[ƒ^İ’è
+  #=== ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
   def set_state(pieces, statuses, turn)
-    # ƒpƒ‰ƒ[ƒ^‰Šú‰»
+    # ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åˆæœŸåŒ–
     clear
     
     @statuses = statuses
@@ -44,12 +44,12 @@ class Animation
     @turn = turn
   end
     
-  #=== ƒAƒjƒ[ƒVƒ‡ƒ“Às
+  #=== ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å®Ÿè¡Œ
   def run
     result = false
     DIVIDE_FILED_Y.times { |i|
       DIVIDE_FILED_X.times { |j|
-        # •`‰æ
+        # æç”»
         state = @pieces_state[DIVIDE_FILED_Y * i + j]
         next if state == PIECE_NONE
         
@@ -60,7 +60,7 @@ class Animation
           if (@statuses[@status_count].x + @dx) == j && (@statuses[@status_count].y + @dy) == i
             if @anim == false
               #-------------------------------
-              # ƒAƒjƒ[ƒVƒ‡ƒ“ŠJn
+              # ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹
               #-------------------------------
               if state == PIECE_WHITE
                 @anim_dir = -1 * ANIMATION_SPEED
@@ -71,7 +71,7 @@ class Animation
               @anim = true
             else
               #-------------------------------
-              # ƒAƒjƒ[ƒVƒ‡ƒ“’†
+              # ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ä¸­
               #-------------------------------
               @anim_count = @anim_count + @anim_dir
               index = @anim_count.to_i
@@ -86,7 +86,7 @@ class Animation
                 end
               end
               if temp == true && result == false
-                 # Œã‚Ìƒ^[ƒ“‚Åã‘‚«‚³‚ê‚È‚¢‚æ‚¤‚É
+                 # å¾Œã®ã‚¿ãƒ¼ãƒ³ã§ä¸Šæ›¸ãã•ã‚Œãªã„ã‚ˆã†ã«
                  result = true
               end
             end
@@ -97,36 +97,36 @@ class Animation
       }
     }
     if (result == true)
-      # ƒAƒjƒ[ƒVƒ‡ƒ“I—¹’Ê’m
+      # ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†é€šçŸ¥
       notify
     end
   end
   
-  #=== ƒAƒjƒ[ƒVƒ‡ƒ“I—¹’Ê’m
+  #=== ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†é€šçŸ¥
   def notify
     changed
     notify_observers(@turn)
   end
   
-  #=== ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒV[ƒPƒ“ƒXXV
+  #=== ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚·ãƒ¼ã‚±ãƒ³ã‚¹æ›´æ–°
   def update_seq(piece_state, i, j)
-    # ƒAƒjƒ[ƒVƒ‡ƒ“I—¹
+    # ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†
     @anim = false
-    # ƒs[ƒXó‘Ô‚ÌXV
+    # ãƒ”ãƒ¼ã‚¹çŠ¶æ…‹ã®æ›´æ–°
     @pieces_state[DIVIDE_FILED_Y * i + j] = piece_state
-    # Ÿ‚Ìƒs[ƒX‚Ö
+    # æ¬¡ã®ãƒ”ãƒ¼ã‚¹ã¸
     @anim_index = @anim_index + 1
     
-    # ˆÊ’uXV
+    # ä½ç½®æ›´æ–°
     @dx = @dx + @statuses[@status_count].dx
     @dy = @dy + @statuses[@status_count].dy
 
     if @anim_index == @statuses[@status_count].count
-      # ˆê‚Â‚Ì•ûŒü‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚è ¨ Ÿ‚Ì•ûŒü‚Ö
+      # ä¸€ã¤ã®æ–¹å‘ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚ã‚ã‚Š â†’ æ¬¡ã®æ–¹å‘ã¸
       @status_count = @status_count + 1
       @anim_index = 0
       if @status_count == @statuses.size
-        # ‘S‚Ä‚Ì•ûŒü‚ÌƒAƒjƒ[ƒVƒ‡ƒ“I—¹
+        # å…¨ã¦ã®æ–¹å‘ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†
         return true
       end
       @dx, @dy = @statuses[@status_count].dx, @statuses[@status_count].dy

@@ -1,14 +1,13 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 
 #-------------------------------------
-# リバーシステータス
+# 繝ｪ繝舌�ｼ繧ｷ繧ｹ繝�繝ｼ繧ｿ繧ｹ
 #-------------------------------------
 class ReversiStatus
-  
+
   def initialize
   end
-  
+
   attr_accessor :count, :dx, :dy, :x, :y
 end
-

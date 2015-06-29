@@ -1,4 +1,4 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./common"
 require "./player"
 require "./simplekun"
@@ -6,104 +6,104 @@ require "./state"
 require "./animation"
 
 #-------------------------------------
-# ÉVÅ[Éìä«óùÉNÉâÉX
+# „Ç∑„Éº„É≥ÁÆ°ÁêÜ„ÇØ„É©„Çπ
 #-------------------------------------
 class Scene
-  
+
   include Reversi
-  
-  TURN_PLAYER = 1      # ÉvÉåÉCÉÑÅ[èoî‘
-  TURN_COMPUTER = 2    # ÉRÉìÉsÉÖÅ[É^èoî‘
-  TURN_REVERSI = 3     # îΩì]íÜ
-  TURN_GAMEOVER = 9    # ÉQÅ[ÉÄèIóπ
-  
+
+  TURN_PLAYER = 1      # „Éó„É¨„Ç§„É§„ÉºÂá∫Áï™
+  TURN_COMPUTER = 2    # „Ç≥„É≥„Éî„É•„Éº„ÇøÂá∫Áï™
+  TURN_REVERSI = 3     # ÂèçËª¢‰∏≠
+  TURN_GAMEOVER = 9    # „Ç≤„Éº„É†ÁµÇ‰∫Ü
+
   PIECEIMG_FILEPATH = "res/piece.png"
   PIECEIMG_XCOUNT = 5
   PIECEIMG_YCOUNT = 1
-  
+
   @@turn = TURN_PLAYER
-  
-  #=== ÉAÉjÉÅÅ[ÉVÉáÉìèIóπäƒéã
+
+  #=== „Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥ÁµÇ‰∫ÜÁõ£Ë¶ñ
   class AnimationObserver
     def update(turn)
       if (turn == TURN_PLAYER)
-        # ÉvÉåÉCÉÑÅ[Å®ÉRÉìÉsÉÖÅ[É^
+        # „Éó„É¨„Ç§„É§„Éº‚Üí„Ç≥„É≥„Éî„É•„Éº„Çø
         Scene.set_turn(TURN_COMPUTER)
       elsif (turn == TURN_COMPUTER)
-        # ÉRÉìÉsÉÖÅ[É^Å®ÉvÉåÉCÉÑÅ[
+        # „Ç≥„É≥„Éî„É•„Éº„Çø‚Üí„Éó„É¨„Ç§„É§„Éº
         Scene.set_turn(TURN_PLAYER)
       end
     end
   end
-  
-  #=== É^Å[ÉìïœçX
+
+  #=== „Çø„Éº„É≥Â§âÊõ¥
   def Scene.set_turn(turn)
     @@turn = turn
   end
-  
-  #=== èâä˙âªèàóù
-  #äeÉsÅ[ÉXâÊëúÇÃê∂ê¨ÅAÉvÉåÉCÉÑÅ[ÉNÉâÉXÇÃê∂ê¨ÇçsÇ¢Ç‹Ç∑
+
+  #=== ÂàùÊúüÂåñÂá¶ÁêÜ
+  #ÂêÑ„Éî„Éº„ÇπÁîªÂÉè„ÅÆÁîüÊàê„ÄÅ„Éó„É¨„Ç§„É§„Éº„ÇØ„É©„Çπ„ÅÆÁîüÊàê„ÇíË°å„ÅÑ„Åæ„Åô
   def initialize
-    # î’è„Ç≈ÇÃèÛë‘íl
+    # Áõ§‰∏ä„Åß„ÅÆÁä∂ÊÖãÂÄ§
     @pieces_state = Array.new(DIVIDE_FILED_X * DIVIDE_FILED_Y, PIECE_NONE);
-    
-    # ÉsÅ[ÉXÉCÉÅÅ[ÉWçÏê¨
+
+    # „Éî„Éº„Çπ„Ç§„É°„Éº„Ç∏‰ΩúÊàê
     tx = DIVIDE_SIZEX / 2
     ty = DIVIDE_SIZEY / 2
     @pieces = Image.loadTiles(PIECEIMG_FILEPATH, PIECEIMG_XCOUNT, PIECEIMG_YCOUNT)
-    
-    # èoî‘èâä˙âª
+
+    # Âá∫Áï™ÂàùÊúüÂåñ
     @player = Player.new(@pieces[PIECE_BLACK], Proc.new{|x, y| update_secen(x, y, PIECE_BLACK)})
     @computer = SimpleKun.new(PIECE_WHITE, @pieces[PIECE_WHITE], @pieces_state, Proc.new{|x, y| update_secen(x, y, PIECE_WHITE)})
-    
-    # ÉAÉjÉÅÅ[ÉVÉáÉìèàóùÉNÉâÉX
+
+    # „Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥Âá¶ÁêÜ„ÇØ„É©„Çπ
     @animation = Animation.new(@pieces)
     @animation.add_observer(AnimationObserver.new)
-    
+
     @font = Font.new(40)
   end
-  
-  #=== ÉZÉãì‡Ç…é˚Ç‹ÇÈâ~ÇÃîºåaÇéZèo
-  # x * y / 2 = Å„(x * x + y * y) * r / 2
+
+  #=== „Çª„É´ÂÜÖ„Å´Âèé„Åæ„ÇãÂÜÜ„ÅÆÂçäÂæÑ„ÇíÁÆóÂá∫
+  # x * y / 2 = ‚àö(x * x + y * y) * r / 2
   def calc_radius(x, y)
     r = x * y / Math::sqrt(x * x + y * y)
   end
-  
-  #=== ÉVÅ[Éìèâä˙âª
+
+  #=== „Ç∑„Éº„É≥ÂàùÊúüÂåñ
   #
   def init_scene
-    # ÉVÅ[ÉìÇÃèâä˙âª
+    # „Ç∑„Éº„É≥„ÅÆÂàùÊúüÂåñ
     _white = (DIVIDE_FILED_Y + 1) * ((DIVIDE_FILED_Y / 2) - 1)
     _black = _white + 1
     @pieces_state[_white] = PIECE_WHITE
     @pieces_state[_black] = PIECE_BLACK
-    
+
     _white = (DIVIDE_FILED_Y + 1) * (DIVIDE_FILED_Y / 2)
     _black = _white - 1
     @pieces_state[_white] = PIECE_WHITE
     @pieces_state[_black] = PIECE_BLACK
   end
 
-  #=== ÉVÅ[ÉìÇÃçXêV
-  # - x::êVãKÉsÅ[ÉXxç¿ïW
-  # - y::êVãKÉsÅ[ÉXyç¿ïW
+  #=== „Ç∑„Éº„É≥„ÅÆÊõ¥Êñ∞
+  # - x::Êñ∞Ë¶è„Éî„Éº„ÇπxÂ∫ßÊ®ô
+  # - y::Êñ∞Ë¶è„Éî„Éº„ÇπyÂ∫ßÊ®ô
   def update_secen(x, y, state)
-    # ÉsÅ[ÉXÇÃà íuÇãÅÇﬂÇÈ
+    # „Éî„Éº„Çπ„ÅÆ‰ΩçÁΩÆ„ÇíÊ±Ç„ÇÅ„Çã
     place = y * DIVIDE_FILED_X + x
-    
+
     if @@turn == TURN_COMPUTER && x == -1 && y == -1
-      # Ç«Ç±Ç…Ç‡íuÇ´èÍèäÇ™ñ≥Ç¢
+      # „Å©„Åì„Å´„ÇÇÁΩÆ„ÅçÂ†¥ÊâÄ„ÅåÁÑ°„ÅÑ
       @@turn = TURN_PLAYER
       return
     end
     if @pieces_state[place] == PIECE_NONE
-      # î’è„çXêV
+      # Áõ§‰∏äÊõ¥Êñ∞
       statuses = State.updateState(@pieces_state, x, y, state, false)
       if statuses.size > 0
         @pieces_state[place] = state
         if USE_ANIMATION == true
           #@turn = TURN_REVERSI + @turn
-          # ÉAÉjÉÅÅ[ÉVÉáÉìê›íË
+          # „Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥Ë®≠ÂÆö
           @animation.set_state(@pieces_state, statuses, @@turn)
           @@turn = TURN_REVERSI
         else
@@ -112,71 +112,70 @@ class Scene
       end
     end
   end
-  
-  #=== çXêVèàóù
+
+  #=== Êõ¥Êñ∞Âá¶ÁêÜ
   #
   def update
-    # èIóπîªíË
+    # ÁµÇ‰∫ÜÂà§ÂÆö
     if State.game_over?(@pieces_state) == true
-      # ÉQÅ[ÉÄèIóπ
+      # „Ç≤„Éº„É†ÁµÇ‰∫Ü
       @@turn = TURN_GAMEOVER
     end
-    
+
     if @@turn == TURN_PLAYER
-      # ÉvÉåÉCÉÑÅ[ÇÃî‘
+      # „Éó„É¨„Ç§„É§„Éº„ÅÆÁï™
       @player.update
     elsif @@turn == TURN_COMPUTER
-      # PCÇÃî‘
+      # PC„ÅÆÁï™
       @computer.update
-      
+
     elsif @@turn == TURN_GAMEOVER
-      # èüóòé“îªíË
+      # ÂãùÂà©ËÄÖÂà§ÂÆö
       @winner = State.who_winner?(@pieces_state)
     end
   end
-  
-  #=== ï`âÊèàóù
-  #åªç›ÇÃèÛë‘Ç…âûÇ∂ÇΩÉsÅ[ÉXâÊëúÇï`âÊÇµÇ‹Ç∑
+
+  #=== ÊèèÁîªÂá¶ÁêÜ
+  #ÁèæÂú®„ÅÆÁä∂ÊÖã„Å´Âøú„Åò„Åü„Éî„Éº„ÇπÁîªÂÉè„ÇíÊèèÁîª„Åó„Åæ„Åô
   def draw
-    # ÉVÅ[ÉìÇÃï`âÊ
+    # „Ç∑„Éº„É≥„ÅÆÊèèÁîª
     if @@turn == TURN_PLAYER
-      # ÉvÉåÉCÉÑÅ[ÇÃî‘
+      # „Éó„É¨„Ç§„É§„Éº„ÅÆÁï™
       draw_pieces
       @player.draw
-      
+
     elsif @@turn == TURN_COMPUTER
-      # PCÇÃî‘
+      # PC„ÅÆÁï™
       draw_pieces
-      
+
     elsif @@turn == TURN_REVERSI
-      # îΩì]íÜ
+      # ÂèçËª¢‰∏≠
       @animation.run
-      
+
     elsif @@turn == TURN_GAMEOVER
-      # ÉQÅ[ÉÄèIóπ
+      # „Ç≤„Éº„É†ÁµÇ‰∫Ü
       str = ""
       if @winner == PIECE_NONE
-        str = "à¯Ç´ï™ÇØÅB"
+        str = "Âºï„ÅçÂàÜ„Åë„ÄÇ"
       elsif @winner == PIECE_WHITE
-        str = "îíÇÃèüÇøÅB"
+        str = "ÁôΩ„ÅÆÂãù„Å°„ÄÇ"
       elsif @winner == PIECE_BLACK
-        str = "çïÇÃèüÇøÅB"
+        str = "Èªí„ÅÆÂãù„Å°„ÄÇ"
       end
       Window.drawFont(50, 100, str, @font, :color => C_RED)
     end
   end
 
-  #=== äeÉsÅ[ÉXÇï`âÊ
+  #=== ÂêÑ„Éî„Éº„Çπ„ÇíÊèèÁîª
   def draw_pieces
     DIVIDE_FILED_Y.times { |i|
       DIVIDE_FILED_X.times { |j|
-        # ï`âÊ
+        # ÊèèÁîª
         state = @pieces_state[DIVIDE_FILED_Y * i + j]
-        # state => 9 : âΩÇ‡ñ≥Ç¢
+        # state => 9 : ‰Ωï„ÇÇÁÑ°„ÅÑ
         next if state == PIECE_NONE
         Window.draw(j * DIVIDE_SIZEX + (DIVIDE_SIZEX - @pieces[state].width) / 2, i * DIVIDE_SIZEY, @pieces[state])
       }
     }
   end
 end
-

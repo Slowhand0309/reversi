@@ -1,25 +1,25 @@
-#!ruby -Ks
+#!ruby -Ku
 require "./compute"
 
 #-------------------------------------
-# コンピュータクラス
+# 繧ｳ繝ｳ繝斐Η繝ｼ繧ｿ繧ｯ繝ｩ繧ｹ
 #-------------------------------------
 class SimpleKun < Compute
-  
+
   def initialize(state, imgPiece, piecesState, callBack)
     super(state, imgPiece, piecesState, callBack)
   end
-  
+
   protected
-  
+
   def compute_position
     count = 0
     x, y = -1, -1
-    # 一番ひっくり返す数が多い箇所を算出
+    # 荳逡ｪ縺ｲ縺｣縺上ｊ霑斐☆謨ｰ縺悟､壹＞邂�謇繧堤ｮ怜�ｺ
     DIVIDE_FILED_Y.times { |i|
       DIVIDE_FILED_X.times { |j|
         if @piecesState[i * DIVIDE_FILED_X + j] != PIECE_NONE
-          # 既に配置済み
+          # 譌｢縺ｫ驟咲ｽｮ貂医∩
           next
         end
         State::CHECK_TARGETS.each { |dx, dy|
@@ -35,6 +35,5 @@ class SimpleKun < Compute
     }
     return x, y
   end
-  
-end
 
+end
